@@ -21,6 +21,6 @@ jobs:
         yes | ./fetch_transifex.sh
     - name: Build documents & Deploy to Github pages (branch `gh-pages`)
       run: |
-        chmod + x ./deploy.sh
+        chmod +x ./deploy.sh
         yes | ./deploy.sh
     
