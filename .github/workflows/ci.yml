@@ -1,6 +1,10 @@
 name: CI
 
-on: [push]
+on:
+  push:
+    branches: 
+      - dev
+      - transifex
 
 jobs:
   build:
@@ -8,7 +12,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout branch `dev`
+      uses: actions/checkout@v2
+      with:
+        ref: dev
     - name: Fetch all branches
       run: |
         git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
+    - name: Checkout branch `transifex` files into branch `dev`
+      run: |
+        chmod +x ./fetch_transifex.sh
+        yes | ./fetch_transifex.sh
+    - name: Build documents & Deploy to Github pages (branch `gh-pages`)
+      run: |
+        chmod + x ./deploy.sh
+        yes | ./deploy.sh
+    
