@@ -1,13 +1,20 @@
 #!/bin/bash
 
-echo -e "\nPlease run in the root directory of the repository!\n"
-echo -e "We are going to delete current old deployed files, please check below for your git status...\n"
-sleep 0.5
-git status
-echo -e "\n"
-ls -lah
-echo -e "\n\nIf everything looks fine, press any key to continue..."
-read
+if [ -v CI ]; then
+  echo -e "Running in CI environment"
+  git status
+  echo -e "\n"
+  ls -lah
+else
+  echo -e "\nPlease run in the root directory of the repository!\n"
+  echo -e "We are going to delete current old deployed files, please check below for your git status...\n"
+  sleep 0.5
+  git status
+  echo -e "\n"
+  ls -lah
+  echo -e "\n\nIf everything looks fine, press any key to continue..."
+  read
+fi
 
 rm -rv advanced app basics en_US prep README.md resource routing
 
