@@ -1,12 +1,16 @@
 name: CI
 
-on: [push]
+on:
+  push:
+    branches: 
+      - dev
+      - transifex
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
+    env: 
+      CI: true
     steps:
     - name: Checkout branch `dev`
       uses: actions/checkout@v2
@@ -25,9 +29,11 @@ jobs:
     - name: Checkout branch `transifex` files into branch `dev`
       run: |
         chmod +x ./fetch_transifex.sh
-        yes | ./fetch_transifex.sh
+        ./fetch_transifex.sh
     - name: Build documents & Deploy to Github pages (branch `gh-pages`)
+      env:
+        DEFAULT_REPO:  https://github.com/${{ github.repository }}
       run: |
         chmod +x ./deploy.sh
-        yes | ./deploy.sh
+        ./deploy.sh
     
